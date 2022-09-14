@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pool.config.exception.ResponseNotFound;
 import com.pool.entity.GeoLocationEntity;
 import com.pool.repository.GeoLocationRepository;
 
@@ -22,6 +23,15 @@ public class GeoLocationServiceImpl implements GeoLocationService {
     @Cacheable(value = "geos")
     public List<GeoLocationEntity> getGeoLocationEntities() {
         return geoLocationRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "geos", key = "#geolocation")
+    public GeoLocationEntity getGeoLocation(String geolocation) {
+        GeoLocationEntity geoLocationEntity = geoLocationRepository.findByGeoLocation(geolocation)
+                .orElseThrow(() -> new ResponseNotFound("Geo Location Not Found"));
+        return geoLocationEntity;
     }
 
 }
