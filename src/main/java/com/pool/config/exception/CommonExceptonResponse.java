@@ -1,5 +1,15 @@
 package com.pool.config.exception;
 
-public class CommonExceptonResponse {
+import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CommonExceptonResponse {
+    private String message;
+    private Date occuredAt;
 }
